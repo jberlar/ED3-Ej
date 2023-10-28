@@ -12,6 +12,8 @@ uint8_t inte;
 
 int main(void) {
 
+		
+		uint32_t tiempo;
 		uint32_t relojCpu = SystemCoreClock;
 
 		configGPIO();

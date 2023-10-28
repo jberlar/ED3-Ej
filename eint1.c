@@ -7,12 +7,12 @@
 void configGPIO(void);
 void delay(uint32_t tiempo);
 void confIntExt(void);
-void EINT3_IRQHandler(void);
-uint8_t inte;
+void EINT0_IRQHandler(void);
+uint8_t inte = 0;
 
 int main(void) {
 
-		uint32_t relojCpu = SystemCoreClock;
+		uint32_t tiempo;
 
 		configGPIO();
 		confIntExt();
@@ -36,7 +36,6 @@ int main(void) {
 }
 
 void configGPIO(void){
-
 	LPC_GPIO0->FIODIR |= (LED);
 	return;
 }
@@ -50,15 +49,15 @@ void delay(uint32_t tiempo){
 //RE Int @ P2.10
 void confIntExt(void){
 	LPC_PINCON->PINSEL4 |= (1<<20);
-	LPC_SC->EXTINT |= 1;
 	LPC_SC->EXTMODE |= 1;
-	LPC_SC->EXTPOLAR |= 1;
+	LPC_SC->EXTPOLAR |= 1; 
+	LPC_SC->EXTINT |= 1; //clear flag
 	NVIC_Enable(EINT0_IRQn);
 	return;
 }
 
 void EINT0_IRQHandler(void){
-
 	inte++;
 	LPC_SC->EXTINT |= 1;
+	return;
 }
